@@ -1,0 +1,248 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  color: #333d47;
+}
+
+.root {
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+/* __________header__________*/
+
+.header {
+  background: #225fbf;
+  border-bottom: 4px solid #1753b3;
+  width: 100%;
+  height: 68px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 16px 18px 15.62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+}
+
+/* __________nav__________*/
+
+.nav-container {
+  display: flex;
+  align-items: center;
+}
+
+.nav-container div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 106px;
+  height: 68px;
+}
+
+.nav-container div a {
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.active-nav-link::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 106px;
+  height: 4px;
+  margin-top: 68px;
+  background: #5495ff;
+  border-radius: 3px;
+}
+
+.nav-container div:not(:last-child) {
+  margin-right: 52px;
+}
+
+.nav-container div:last-child a {
+  margin-right: 4px;
+}
+
+/* __________header-user-bar__________*/
+
+.header-user-bar {
+  display: flex;
+  align-items: center;
+}
+
+.header-message,
+.header-turn-off {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #1753b3;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.header-user-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1753b3;
+  padding: 0 18px 0 2px;
+  width: 124px;
+  height: 32px;
+  border-radius: 50px;
+  margin: 0 32px 0 16px;
+  cursor: pointer;
+}
+
+/* __________main__________*/
+
+.main {
+  background: #f6f8fd;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  display: flex;
+  background: #ffffff;
+  width: 100%;
+  max-width: 1202px;
+  margin: 18px 0;
+  padding: 24px 24px 0 24px;
+  box-shadow: 0px 1px 3px rgba(32, 75, 146, 0.15);
+  border-radius: 5px;
+  height: max-content;
+}
+
+/* __________narrow-column__________*/
+
+.narrow-column {
+  width: 100%;
+  max-width: 346px;
+  height: 100%;
+  text-align: center;
+}
+
+.narrow-column-avatar {
+  display: flex;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.arrow-left {
+  width: 32px;
+  height: 32px;
+  margin-right: 28px;
+  cursor: pointer;
+  transition: 0.8s;
+}
+.arrow-left:hover {
+  transform: scale(1.2) rotate(-1turn);
+}
+
+.gender {
+  font-size: 15px;
+  line-height: 20px;
+  color: #afb7bf;
+  margin-bottom: 4px;
+}
+
+.gender::before,
+.gender::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  border-top: 1px solid #afb7bf;
+  margin: 0 6px;
+  transform: translateY(-3px);
+}
+
+.name-en {
+  font-size: 18px;
+  line-height: 20px;
+  color: #333d47;
+  margin-bottom: 8px;
+}
+
+.name-ru {
+  font-size: 15px;
+  line-height: 20px;
+  color: #afb7bf;
+}
+
+/* __________wide-column__________*/
+
+.wide-column {
+  width: 100%;
+  padding-top: 32px;
+  padding-left: 32px;
+  border-left: 1px solid #e9edf2;
+}
+
+.profile-section {
+  margin-bottom: 48px;
+}
+
+.profile-section-name {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #818d99;
+}
+
+.profile-section-name::after {
+  content: "";
+  display: block;
+  width: 571px;
+  border-top: 1px solid #e9edf2;
+  margin: 8px 0 16px 0;
+  color: #e9edf2;
+}
+
+.profile-section-description {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.profile-section-description img {
+  margin-right: 17px;
+  width: 16px;
+  height: 16px;
+}
+
+.profile-data-name {
+  width: 181px;
+  margin-right: 85px;
+  font-size: 13px;
+  color: #818d99;
+}
+
+.profile-section-data {
+  font-size: 13px;
+}
