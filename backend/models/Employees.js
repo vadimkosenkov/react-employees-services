@@ -6,10 +6,19 @@ const employeeSchema = new Schema({
     type: Number,
     unique: true,
   },
-  nameRu: {
+  firstNameNative: {
     type: String,
   },
-  nameEn: {
+  lastNameNative: {
+    type: String,
+  },
+  middleNameNative: {
+    type: String,
+  },
+  firstName: {
+    type: String,
+  },
+  lastName: {
     type: String,
   },
   avatarSrc: {
@@ -31,13 +40,12 @@ const employeeSchema = new Schema({
   cNumber: {
     type: String,
   },
-  male: {
-    type: Boolean,
-    default: true,
-  },
   email: {
     type: String,
     default: '',
+  },
+  gender: {
+    type: String,
   },
   skype: {
     type: String,
@@ -58,6 +66,12 @@ const employeeSchema = new Schema({
   vacation: {
     status: { type: Boolean },
     finish_date: { type: Number },
+  },
+  password: {
+    type: String,
+  },
+  role: {
+    type: String,
   },
 });
 
