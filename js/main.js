@@ -5,18 +5,31 @@ const employeesDisplayed = document.querySelector(".employees-displayed");
 const notFoundCard = document.querySelector(".not-found-card");
 const gridViewIcon = document.querySelector(".grid-view-icon");
 const rowViewIcon = document.querySelector(".row-view-icon");
+const logoutBtn = document.querySelector(".header-turn-off");
+const userlogo = document.querySelector(".header-user-info img");
+const userName = document.querySelector(".header-user-info div");
+const settings = document.querySelector(".settings-hidden");
+
+const GET_EMPLOYEES_URL = `https://nodejs-ps143.herokuapp.com/api/employees`;
+
+const userInfo = getFromLocalStorage("userInfo");
+userlogo.src = userInfo.src;
+userName.innerText = userInfo.name;
+checkRoles();
 
 let employees;
 let isRowView = false;
+sendRequest(GET_EMPLOYEES_URL, renderCards, "GET");
 
-const GET_EMPLOYEES_URL = "https://nodejs-ps143.herokuapp.com/api/employees";
-
-sendRequest(GET_EMPLOYEES_URL, renderCards);
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("userInfo");
+  window.open("./auth/auth.html", "_self");
+});
 
 searchBtn.addEventListener("click", () => {
   const searchInputValue = searchInput.value.toLowerCase().trim();
   const getEmployeesUrlOfValue = `${GET_EMPLOYEES_URL}?search=${searchInputValue}`;
-  sendRequest(getEmployeesUrlOfValue, renderCards);
+  sendRequest(getEmployeesUrlOfValue, renderCards, "GET");
 });
 
 gridViewIcon.addEventListener("click", setGridView);
@@ -30,7 +43,6 @@ function setGridView() {
   this.classList.add("svg-active");
   rowViewIcon.classList.remove("svg-active");
 }
-
 function setRowView() {
   cardContainer.innerHTML = "";
   cardContainer.classList.add("row-style");
@@ -46,7 +58,6 @@ function createGridCard(employee) {
   employeeCard.onclick = () => {
     window.open(`profile.html?employeeId=${employee.id}`, "_self");
   };
-
   employeeCard.classList.add("employee-card");
   cardContainer.append(employeeCard);
 
@@ -62,12 +73,12 @@ function createGridCard(employee) {
   const cardNameEn = document.createElement("div");
   cardNameEn.classList.add("card-name-en");
   cardNameContainer.append(cardNameEn);
-  cardNameEn.innerHTML = employee.nameEn;
+  cardNameEn.innerHTML = `${employee.firstName} ${employee.lastName}`;
 
   const cardNameRu = document.createElement("div");
   cardNameRu.classList.add("card-name-ru");
   cardNameContainer.append(cardNameRu);
-  cardNameRu.innerHTML = employee.nameRu;
+  cardNameRu.innerHTML = `${employee.firstNameNative} ${employee.lastNameNative}`;
 
   const officeLocation = document.createElement("div");
   officeLocation.classList.add("office-location");
@@ -88,6 +99,7 @@ function createGridCard(employee) {
 
   const officeRoomIcon = document.createElement("img");
   officeRoomIcon.src = "./assets/icons/room.svg";
+
   officeRoom.append(officeRoomIcon);
   officeRoom.innerHTML += employee.roomNumber;
 }
@@ -97,8 +109,8 @@ function createRowCard(employee) {
   row.onclick = () => {
     window.open(`profile.html?employeeId=${employee.id}`, "_self");
   };
-
   row.classList.add("row");
+  row.href = `./profile.html?employeeId=${employee.id}`;
   const employeeImg = document.createElement("img");
   employeeImg.classList.add("employee-img-row");
   employeeImg.src = employee.avatarSrc;
@@ -108,11 +120,11 @@ function createRowCard(employee) {
 
   const cardNameEn = document.createElement("div");
   cardNameEn.classList.add("card-name-en");
-  cardNameEn.innerHTML = employee.nameEn;
+  cardNameEn.innerHTML = `${employee.firstName} ${employee.lastName}`;
 
   const cardNameRu = document.createElement("div");
   cardNameRu.classList.add("card-name-ru-row");
-  cardNameRu.innerHTML = employee.nameRu;
+  cardNameRu.innerHTML = `${employee.firstNameNative} ${employee.lastNameNative}`;
 
   const department = createRowInfo(
     "./assets/icons/department.svg",
@@ -167,5 +179,11 @@ function renderCards(data, error) {
     } else {
       notFoundCard.classList.remove("hidden");
     }
+  }
+}
+
+function checkRoles() {
+  if (userInfo.role === "admin") {
+    settings.classList.remove("hidden");
   }
 }
