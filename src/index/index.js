@@ -1,3 +1,9 @@
+import "./index.scss";
+import * as utils from "./../utilities/utilities";
+
+const userInfo = utils.getFromLocalStorage("userInfo");
+checkAuth();
+
 const searchInput = document.querySelector(".search-input");
 const searchBtn = document.querySelector(".search-btn");
 const cardContainer = document.querySelector(".card-container");
@@ -6,30 +12,29 @@ const notFoundCard = document.querySelector(".not-found-card");
 const gridViewIcon = document.querySelector(".grid-view-icon");
 const rowViewIcon = document.querySelector(".row-view-icon");
 const logoutBtn = document.querySelector(".header-turn-off");
-const userlogo = document.querySelector(".header-user-info img");
+const userLogo = document.querySelector(".header-user-info img");
 const userName = document.querySelector(".header-user-info div");
 const settings = document.querySelector(".settings-hidden");
 
 const GET_EMPLOYEES_URL = `https://nodejs-ps143.herokuapp.com/api/employees`;
 
-const userInfo = getFromLocalStorage("userInfo");
-userlogo.src = userInfo.src;
+userLogo.src = userInfo.src;
 userName.innerText = userInfo.name;
 checkRoles();
 
 let employees;
 let isRowView = false;
-sendRequest(GET_EMPLOYEES_URL, renderCards, "GET");
+utils.sendRequest(GET_EMPLOYEES_URL, renderCards, "GET");
 
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("userInfo");
-  window.open("./auth/auth.html", "_self");
+  window.open("./auth.html", "_self");
 });
 
 searchBtn.addEventListener("click", () => {
   const searchInputValue = searchInput.value.toLowerCase().trim();
   const getEmployeesUrlOfValue = `${GET_EMPLOYEES_URL}?search=${searchInputValue}`;
-  sendRequest(getEmployeesUrlOfValue, renderCards, "GET");
+  utils.sendRequest(getEmployeesUrlOfValue, renderCards, "GET");
 });
 
 gridViewIcon.addEventListener("click", setGridView);
@@ -54,10 +59,7 @@ function setRowView() {
 
 function createGridCard(employee) {
   const employeeCard = document.createElement("a");
-
-  employeeCard.onclick = () => {
-    window.open(`profile.html?employeeId=${employee.id}`, "_self");
-  };
+  employeeCard.href = `./profile.html?employeeId=${employee.id}`;
   employeeCard.classList.add("employee-card");
   cardContainer.append(employeeCard);
 
@@ -106,11 +108,9 @@ function createGridCard(employee) {
 
 function createRowCard(employee) {
   const row = document.createElement("a");
-  row.onclick = () => {
-    window.open(`profile.html?employeeId=${employee.id}`, "_self");
-  };
-  row.classList.add("row");
   row.href = `./profile.html?employeeId=${employee.id}`;
+  row.classList.add("row");
+
   const employeeImg = document.createElement("img");
   employeeImg.classList.add("employee-img-row");
   employeeImg.src = employee.avatarSrc;
@@ -185,5 +185,11 @@ function renderCards(data, error) {
 function checkRoles() {
   if (userInfo.role === "admin") {
     settings.classList.remove("hidden");
+  }
+}
+
+function checkAuth() {
+  if (!userInfo) {
+    window.open("./auth.html", "_self");
   }
 }

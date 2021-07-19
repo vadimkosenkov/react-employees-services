@@ -1,3 +1,5 @@
+import "./auth.scss";
+import * as utils from "./../utilities/utilities";
 checkRole();
 
 const authForm = document.querySelector(".auth-form");
@@ -11,20 +13,22 @@ authForm.addEventListener("submit", login);
 function login(e) {
   e.preventDefault();
   const data = { email: email.value, password: password.value };
-  sendRequest(GET_EMPLOYEES_URL, authenticate, "POST", data);
+  utils.sendRequest(GET_EMPLOYEES_URL, authenticate, "POST", data);
 }
 
 function authenticate(data, error) {
   if (!error) {
-    const tokenData = parseJwt(data.token.split(" ")[1]);
-    setToLocalStorage("userInfo", tokenData);
-    window.open("./../index.html", "_self");
+    const tokenData = utils.parseJwt(data.token.split(" ")[1]);
+    utils.setToLocalStorage("userInfo", tokenData);
+    window.open("./index.html", "_self");
+  } else {
+    alert("Email or password is incorrect. Please check and try again.");
   }
 }
 
 function checkRole() {
-  const userInfo = getFromLocalStorage("userInfo");
+  const userInfo = utils.getFromLocalStorage("userInfo");
   if (userInfo) {
-    window.open("./../index.html", "_self");
+    window.open("./index.html", "_self");
   }
 }

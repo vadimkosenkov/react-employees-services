@@ -1,10 +1,15 @@
+import "./profile.scss";
+import * as utils from "./../utilities/utilities";
+
+const userInfo = utils.getFromLocalStorage("userInfo");
+checkAuth();
+
 const editLink = document.querySelector(".edit-link-container");
-const changeBtns = document.querySelector(".change-container");
 const changeHidden = document.querySelector(".change-container-hidden");
 const editHidden = document.querySelector(".edit-link-hidden");
 const fullName = document.querySelector(".full-name");
 const sectionHidden = document.querySelector(".profile-section-hidden");
-const userlogo = document.querySelector(".header-user-info img");
+const userLogo = document.querySelector(".header-user-info img");
 const userName = document.querySelector(".header-user-info div");
 const settings = document.querySelector(".settings-hidden");
 const logoutBtn = document.querySelector(".header-turn-off");
@@ -34,9 +39,7 @@ const employeeSendData = {
 };
 
 let employeeData;
-
-const userInfo = getFromLocalStorage("userInfo");
-userlogo.src = `.${userInfo.src}`;
+userLogo.src = userInfo.src;
 userName.innerText = userInfo.name;
 
 saveBtn.addEventListener("click", (e) => {
@@ -50,11 +53,11 @@ cancelBtn.addEventListener("click", (e) => {
 
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("userInfo");
-  window.open("../auth/auth.html", "_self");
+  window.open("./auth.html", "_self");
 });
 
 document.querySelector(".arrow-left").addEventListener("click", () => {
-  window.open("index.html", "_self");
+  window.open("./index.html", "_self");
 });
 
 const employeeId = getQueryParam();
@@ -63,7 +66,7 @@ const EMPLOYEES_URL = `https://nodejs-ps143.herokuapp.com/api/employees/${employ
 editLink.addEventListener("click", editProfile);
 
 checkRoles();
-sendRequest(EMPLOYEES_URL, renderProfile, "GET");
+utils.sendRequest(EMPLOYEES_URL, renderProfile, "GET");
 
 function getQueryParam() {
   const url = new URL(window.location.href);
@@ -75,7 +78,7 @@ function renderProfile(data, error) {
     employeeData = { ...data };
 
     document.querySelector(".avatar").setAttribute("src", data.avatarSrc);
-    createProfileContent(".gender", data.gender ? "Mr" : "Ms");
+    createProfileContent(".gender", data.gender);
     createProfileContent(".name-en", `${data.firstName} ${data.lastName}`);
     createProfileContent(
       ".name-ru",
@@ -88,7 +91,7 @@ function renderProfile(data, error) {
     createProfileContent(".email", data.email);
     createProfileContent(".skype", data.skype);
     createProfileContent(".c-number", data.cNumber);
-    createProfileContent(".hire-date", getDateString(data.dateHired));
+    createProfileContent(".hire-date", utils.getDateString(data.dateHired));
     createProfileContent(".status", data.isActive ? "Active" : "Fired");
     createProfileContent(
       ".vacation",
@@ -148,7 +151,7 @@ function editProfile() {
   createAndEditProfileContent("c-number", employeeData.cNumber, "text");
   createAndEditProfileContent(
     "hire-date",
-    getDateCalendar(employeeData.dateHired),
+    utils.getDateCalendar(employeeData.dateHired),
     "date"
   );
   createAndEditProfileContent(
@@ -170,7 +173,12 @@ function editProfile() {
 
 function saveEmployeeData() {
   generateEmployeeObj();
-  sendRequest(EMPLOYEES_URL, reRenderEmployeeData, "PATCH", employeeSendData);
+  utils.sendRequest(
+    EMPLOYEES_URL,
+    reRenderEmployeeData,
+    "PATCH",
+    employeeSendData
+  );
 }
 
 function reRenderEmployeeData(data, error) {
@@ -189,6 +197,7 @@ function generateEmployeeObj() {
   employeeSendData.gender = document.querySelector(".gender-input-mr").checked
     ? document.querySelector(".gender-input-mr").value
     : document.querySelector(".gender-input-ms").value;
+
   employeeSendData.firstName = document.querySelector("input.first-name").value;
   employeeSendData.lastName = document.querySelector("input.last-name").value;
   employeeSendData.firstNameNative = document.querySelector(
@@ -230,5 +239,11 @@ function checkRoles() {
     if (userInfo.role === "admin") {
       settings.classList.remove("hidden");
     }
+  }
+}
+
+function checkAuth() {
+  if (!userInfo) {
+    window.open("./auth.html", "_self");
   }
 }
