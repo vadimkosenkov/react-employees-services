@@ -1,10 +1,31 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorGrey: #333d47;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+@mixin genderPseudo {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  border-top: 1px solid $colorLightGrey;
+  margin: 0 6px;
+  transform: translateY(-3px);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
-  color: #333d47;
+  color: $colorGrey;
 }
 
 .root {
@@ -17,53 +38,51 @@
   display: none !important;
 }
 
-/* __________header__________*/
-
 .header {
   background: #225fbf;
-  border-bottom: 4px solid #1753b3;
+  border-bottom: 4px solid $colorBlue;
   width: 100%;
   height: 68px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 .header-container {
+  @include flex(center, space-between);
   width: 100%;
   height: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 18px 16px 18px 15.62px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .header-title {
-  display: flex;
-  flex-direction: column;
+  @include flex($fd: column);
   margin-right: 16px;
 }
 
-/* __________nav__________*/
-
 .nav-container {
-  display: flex;
-  align-items: center;
-}
+  @include flex(center);
 
-.nav-container div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 106px;
-  height: 68px;
-}
+  div {
+    @include flex(center, center);
+    width: 106px;
+    height: 68px;
 
-.nav-container div a {
-  text-decoration: none;
-  font-size: 13px;
-  line-height: 20px;
-  color: rgba(255, 255, 255, 0.3);
+    &:not(:last-child) {
+      margin-right: 52px;
+    }
+
+    &:last-child a {
+      margin-right: 4px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 20px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
 }
 
 .active-nav-link::after {
@@ -77,57 +96,51 @@
   border-radius: 3px;
 }
 
-.nav-container div:not(:last-child) {
-  margin-right: 52px;
-}
-
-.nav-container div:last-child a {
-  margin-right: 4px;
-}
-
-/* __________header-user-bar__________*/
-
 .header-user-bar {
-  display: flex;
-  align-items: center;
+  @include flex(center);
 }
 
 .header-message,
 .header-turn-off {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex(center, center);
   width: 32px;
   height: 32px;
-  background-color: #1753b3;
+  background-color: $colorBlue;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .header-user-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #1753b3;
+  @include flex(center, space-around);
+  background-color: $colorBlue;
   padding: 0 18px 0 2px;
   height: 32px;
   border-radius: 50px;
   margin: 0 32px 0 16px;
   cursor: pointer;
+
+  div {
+    color: $colorWhite;
+    padding-left: 15px;
+    text-transform: uppercase;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
 }
 
-/* __________main__________*/
-
 .main {
+  @include flex(normal, center);
   background: #f6f8fd;
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .main-container {
   display: flex;
-  background: #ffffff;
+  background: $colorWhite;
   width: 100%;
   max-width: 1202px;
   margin: 18px 0;
@@ -136,8 +149,6 @@
   border-radius: 5px;
   height: max-content;
 }
-
-/* __________narrow-column__________*/
 
 .narrow-column {
   width: 100%;
@@ -164,42 +175,37 @@
   margin-right: 28px;
   cursor: pointer;
   transition: 0.8s;
-}
-.arrow-left:hover {
-  transform: scale(1.2) rotate(-1turn);
+
+  &:hover {
+    transform: scale(1.2) rotate(-1turn);
+  }
 }
 
 .gender {
   font-size: 15px;
   line-height: 20px;
-  color: #afb7bf;
+  color: $colorLightGrey;
   margin-bottom: 4px;
-}
+  text-transform: capitalize;
 
-.gender::before,
-.gender::after {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  border-top: 1px solid #afb7bf;
-  margin: 0 6px;
-  transform: translateY(-3px);
+  &::before,
+  &::after {
+    @include genderPseudo();
+  }
 }
 
 .name-en {
   font-size: 18px;
   line-height: 20px;
-  color: #333d47;
+  color: $colorGrey;
   margin-bottom: 8px;
 }
 
 .name-ru {
   font-size: 15px;
   line-height: 20px;
-  color: #afb7bf;
+  color: $colorLightGrey;
 }
-
-/* __________wide-column__________*/
 
 .wide-column {
   width: 100%;
@@ -213,9 +219,7 @@
 }
 
 .header-of-profile-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  @include flex(baseline, space-between);
 }
 
 .edit-link-container {
@@ -245,28 +249,27 @@
   font-size: 13px;
   text-transform: uppercase;
   color: #818d99;
-}
 
-.profile-section-name::after {
-  content: "";
-  display: block;
-  width: 560px;
-  border-top: 1px solid #e9edf2;
-  margin: 8px 0 16px 0;
-  color: #e9edf2;
+  &::after {
+    content: "";
+    display: block;
+    width: 560px;
+    border-top: 1px solid #e9edf2;
+    margin: 8px 0 16px 0;
+    color: #e9edf2;
+  }
 }
 
 .profile-section-description {
-  display: flex;
-  align-items: center;
+  @include flex(center);
   margin-bottom: 4px;
   height: 36px;
-}
 
-.profile-section-description img {
-  margin-right: 17px;
-  width: 16px;
-  height: 16px;
+  img {
+    margin-right: 17px;
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .profile-data-name {
@@ -283,7 +286,7 @@
 .edit-input {
   width: 260px;
   height: 36px;
-  background: #ffffff;
+  background: $colorWhite;
   border: 1px solid #dae1e8;
   border-radius: 4px;
   padding: 9px 21px 9px 10px;
@@ -301,13 +304,11 @@
 }
 
 .change-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex(center, center);
 }
 
 .save-changes-btn {
-  color: #ffffff;
+  color: $colorWhite;
   background: #5495ff;
 }
 .cancel-changes-btn {
@@ -317,11 +318,9 @@
 
 .cancel-changes-btn,
 .save-changes-btn {
+  @include flex(center, center);
   width: 77px;
   height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 3px;
   font-size: 12px;
   line-height: 20px;
@@ -338,24 +337,12 @@
 }
 
 .gender-input-container {
-  display: flex;
-  align-items: center;
-}
+  @include flex(center);
 
-.gender-input-container span {
-  margin-left: 12px;
-  margin-right: 25px;
-}
-
-.header-user-info div {
-  color: #ffffff;
-  padding-left: 15px;
-  text-transform: uppercase;
-}
-.header-user-info img {
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
+  span {
+    margin-left: 12px;
+    margin-right: 25px;
+  }
 }
 
 .header-message:hover,

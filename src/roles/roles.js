@@ -1,8 +1,14 @@
+import "./roles.scss";
+import * as utils from "./../utilities/utilities";
+
+const userInfo = utils.getFromLocalStorage("userInfo");
+checkAuth();
+
 const GET_EMPLOYEES_URL = "https://nodejs-ps143.herokuapp.com/api/employees";
 const SET_ROLE_URL = "https://nodejs-ps143.herokuapp.com/api/role";
 
 const cardContainer = document.querySelector(".card-container");
-const userlogo = document.querySelector(".header-user-info img");
+const userLogo = document.querySelector(".header-user-info img");
 const userName = document.querySelector(".header-user-info div");
 const settings = document.querySelector(".settings-hidden");
 const logoutBtn = document.querySelector(".header-turn-off");
@@ -11,17 +17,16 @@ const searchInput = document.querySelector(".search-input");
 
 let employees;
 
-const userInfo = getFromLocalStorage("userInfo");
-userlogo.src = `.${userInfo.src}`;
+userLogo.src = userInfo.src;
 userName.innerText = userInfo.name;
 
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("userInfo");
-  window.open("../auth/auth.html", "_self");
+  window.open("./auth.html", "_self");
 });
 
 checkRoles();
-sendRequest(GET_EMPLOYEES_URL, renderCards, "GET");
+utils.sendRequest(GET_EMPLOYEES_URL, renderCards, "GET");
 
 function renderCards(data, error) {
   if (!error) {
@@ -34,7 +39,7 @@ function renderCards(data, error) {
 searchBtn.addEventListener("click", () => {
   const searchInputValue = searchInput.value.toLowerCase().trim();
   const getEmployeesUrlOfValue = `${GET_EMPLOYEES_URL}?search=${searchInputValue}`;
-  sendRequest(getEmployeesUrlOfValue, renderCards, "GET");
+  utils.sendRequest(getEmployeesUrlOfValue, renderCards, "GET");
 });
 
 function createRowCard(employee) {
@@ -43,7 +48,7 @@ function createRowCard(employee) {
   row.classList.add("row");
   const employeeImg = document.createElement("img");
   employeeImg.classList.add("employee-img-row");
-  employeeImg.src = `../${employee.avatarSrc}`;
+  employeeImg.src = employee.avatarSrc;
 
   const rowContainer = document.createElement("div");
   rowContainer.classList.add("row-container");
@@ -58,7 +63,7 @@ function createRowCard(employee) {
 
   const emp = createBtn("employee");
   emp.addEventListener("click", () => {
-    sendRequest(`${SET_ROLE_URL}/${employee.id}`, () => {}, "PATCH", {
+    utils.sendRequest(`${SET_ROLE_URL}/${employee.id}`, () => {}, "PATCH", {
       role: "user",
     });
     activeRoleBtn("user", emp, editor, admin);
@@ -66,7 +71,7 @@ function createRowCard(employee) {
 
   const editor = createBtn("editor");
   editor.addEventListener("click", () => {
-    sendRequest(`${SET_ROLE_URL}/${employee.id}`, () => {}, "PATCH", {
+    utils.sendRequest(`${SET_ROLE_URL}/${employee.id}`, () => {}, "PATCH", {
       role: "editor",
     });
     activeRoleBtn("editor", emp, editor, admin);
@@ -74,7 +79,7 @@ function createRowCard(employee) {
 
   const admin = createBtn("admin");
   admin.addEventListener("click", () => {
-    sendRequest(`${SET_ROLE_URL}/${employee.id}`, () => {}, "PATCH", {
+    utils.sendRequest(`${SET_ROLE_URL}/${employee.id}`, () => {}, "PATCH", {
       role: "admin",
     });
     activeRoleBtn("admin", emp, editor, admin);
@@ -122,4 +127,8 @@ function checkRoles() {
   }
 }
 
-function resetLocalStoreRole() {}
+function checkAuth() {
+  if (!userInfo) {
+    window.open("./auth.html", "_self");
+  }
+}
