@@ -1,0 +1,75 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+@mixin genderPseudo {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  border-top: 1px solid $colorLightGrey;
+  margin: 0 6px;
+  transform: translateY(-3px);
+}
+
+.narrowColumn {
+  width: 100%;
+  max-width: 346px;
+  height: 100%;
+  text-align: center;
+}
+
+.narrowColumnAvatar {
+  display: flex;
+}
+
+.arrowLeft {
+  width: 32px;
+  height: 32px;
+  margin-right: 28px;
+  cursor: pointer;
+  transition: 0.8s;
+
+  &:hover {
+    transform: scale(1.2) rotate(-1turn);
+  }
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.gender {
+  font-size: 15px;
+  line-height: 20px;
+  color: $colorLightGrey;
+  margin-bottom: 4px;
+  text-transform: capitalize;
+
+  &::before,
+  &::after {
+    @include genderPseudo();
+  }
+}
+
+.nameEn {
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 8px;
+}
+
+.nameRu {
+  font-size: 15px;
+  line-height: 20px;
+  color: $colorLightGrey;
+}

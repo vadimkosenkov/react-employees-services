@@ -1,0 +1,69 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  height: 101px;
+  padding: 15px;
+  border: 1px solid #e9edf2;
+  background: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.05s;
+
+  &:hover {
+    transform: scale(1.015);
+    box-shadow: 0 1px 3px rgba(32, 75, 146, 0.6);
+  }
+}
+
+.employeeImgRow {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.rowContainer {
+  @include flex(normal, flex-start, column);
+}
+
+.cardNameEn {
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+
+.cardNameRuRow {
+  font-size: 13px;
+  line-height: 15px;
+  color: $colorLightGrey;
+  margin-top: 4px;
+  margin-bottom: 11px;
+}
+
+.rowContainerInfo {
+  display: flex;
+}
+
+.rowInfoContainer {
+  @include flex(center, center);
+  margin-right: 32px;
+
+  div {
+    font-size: 12px;
+    line-height: 16px;
+    margin-left: 7px;
+  }
+}

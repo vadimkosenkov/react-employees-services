@@ -1,0 +1,27 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.main {
+  background: #f6f8fd;
+  width: 100%;
+  @include flex(normal, center);
+}
+
+.mainContainer {
+  width: 100%;
+  max-width: 1202px;
+  height: 100%;
+  min-height: 100vh;
+  margin: 18px 0;
+  padding: 24px;
+  box-shadow: 0px 1px 3px rgba(32, 75, 146, 0.15);
+  background: $colorWhite;
+}
