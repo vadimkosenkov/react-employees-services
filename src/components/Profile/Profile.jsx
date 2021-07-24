@@ -1,52 +1,47 @@
-import React from "react";
-import "../../App.scss";
-import s from "./Profile.module.scss";
-import NarrowColumn from "./NarrowColumn/NarrowColumn.jsx";
-import WideColumn from "./WideColumn/WideColumn.jsx";
-import { withRouter } from "react-router";
-import { sendRequest } from "./../../utilities/utilities.js";
+import React, { useState, useEffect } from 'react';
+import '../../App.scss';
+import s from './Profile.module.scss';
+import NarrowColumn from './NarrowColumn/NarrowColumn.jsx';
+import WideColumn from './WideColumn/WideColumn.jsx';
+import { withRouter } from 'react-router';
+import { sendRequest } from './../../utilities/utilities.js';
 
-class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userId: this.props.location.search.split("=")[1],
+const Profile = props => {
+    const [user, userState] = useState(props.location.search.split('=')[1]);
+    const [edit, isEditState] = useState(false);
+    const [data, dataState] = useState([]);
+
+    const getEmployeeData = () => {
+        sendRequest(`https://nodejs-ps143.herokuapp.com/api/employees/${user}`, renderProfile, 'GET');
     };
-  }
 
-  setEdit = (isEdit) => {
-    this.setState({ isEdit: isEdit });
-  };
+    const setEdit = isEdit => {
+        if (isEdit) {
+            isEditState(isEdit);
+        } else {
+            isEditState(isEdit);
+            getEmployeeData();
+        }
+    };
 
-  componentWillMount() {
-    this.mounted = true;
-    sendRequest(
-      `https://nodejs-ps143.herokuapp.com/api/employees/${this.state.userId}`,
-      this.renderProfile,
-      "GET"
-    );
-  }
+    const renderProfile = (data, error) => {
+        if (!error) {
+            dataState({ ...data });
+        }
+    };
 
-  componentWillUnmount() {
-    this.mounted = false;
-  }
+    useEffect(() => {
+        getEmployeeData();
+    }, []);
 
-  renderProfile = (data, error) => {
-    if (!error && this.mounted) {
-      this.setState({ ...data });
-    }
-  };
-
-  render() {
     return (
-      <main className={s.main}>
-        <div className={s.mainContainer}>
-          <NarrowColumn employee={this.state} />
-          <WideColumn setEditState={this.setEdit} employee={this.state} />
-        </div>
-      </main>
+        <main className={s.main}>
+            <div className={s.mainContainer}>
+                <NarrowColumn data={data} edit={edit} />
+                <WideColumn setEditState={setEdit} data={data} edit={edit} />
+            </div>
+        </main>
     );
-  }
-}
+};
 
 export default withRouter(Profile);

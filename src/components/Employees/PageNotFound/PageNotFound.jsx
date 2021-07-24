@@ -2,7 +2,7 @@ import React from 'react';
 import './../../../App.scss';
 import s from './PageNotFound.module.scss';
 
-function PageNotFound() {
+const PageNotFound = () => {
     return (
         <div className={`${s.notFoundCard} hidden`}>
             <svg width="241" height="201" viewBox="0 0 241 201" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -247,6 +247,6 @@ function PageNotFound() {
             <div>No result match you search. Consider trying different search request.</div>
         </div>
     );
-}
+};
 
 export default PageNotFound;

@@ -2,7 +2,7 @@ import React from 'react';
 import s from './Card.module.scss';
 import { NavLink } from 'react-router-dom';
 
-function Card(props) {
+const Card = props => {
     return (
         <NavLink to={`./profile?id=${props.employee.id}`} className={s.employeeCard}>
             <div className={s.cardNameContainer}>
@@ -24,6 +24,6 @@ function Card(props) {
             </div>
         </NavLink>
     );
-}
+};
 
 export default Card;
