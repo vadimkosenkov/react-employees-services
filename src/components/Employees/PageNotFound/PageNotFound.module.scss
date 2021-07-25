@@ -1,0 +1,41 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.notFoundCard {
+  @include flex(center, flex-start, column);
+  background: #ffffff;
+  box-shadow: 0px 1px 3px rgba(32, 75, 146, 0.15);
+  border-radius: 5px;
+  width: 770px;
+  height: 456px;
+
+  svg {
+    width: 240px;
+    height: 200px;
+    margin-top: 76px;
+    border: 1px dashed #b6b6b6;
+  }
+
+  div {
+    width: 240px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 19px;
+
+    &:last-child {
+      font-size: 13px;
+      line-height: 18px;
+      color: #818d99;
+      opacity: 0.7;
+      margin-top: 7px;
+    }
+  }
+}

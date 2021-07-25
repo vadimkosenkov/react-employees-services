@@ -1,0 +1,153 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.wideColumn {
+  width: 100%;
+  padding-top: 32px;
+  padding-left: 32px;
+  border-left: 1px solid #e9edf2;
+}
+
+.profileSection {
+  margin-bottom: 48px;
+}
+
+.headerOfProfileSection {
+  @include flex(baseline, space-between);
+}
+
+.editLinkContainer {
+  display: flex;
+  padding: 8px 16px;
+  width: 114px;
+  height: 36px;
+  background: #f6f8fd;
+  border-radius: 3px;
+  transition: 0.1s;
+}
+.editLinkContainer:hover,
+.saveChangesBtn:hover,
+.cancelChangesBtn:hover {
+  transform: scale(1.04);
+  box-shadow: 0px 1px 3px rgba(32, 75, 146, 0.15);
+  cursor: pointer;
+}
+.editLink {
+  color: #225fbf;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.profileSectionName {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #818d99;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 560px;
+    border-top: 1px solid #e9edf2;
+    margin: 8px 0 16px 0;
+    color: #e9edf2;
+  }
+}
+
+.profileSectionDescription {
+  @include flex(center);
+  margin-bottom: 4px;
+  height: 36px;
+
+  img {
+    margin-right: 17px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.profileDataName {
+  width: 181px;
+  margin-right: 85px;
+  font-size: 13px;
+  color: #818d99;
+}
+
+.profileSectionData {
+  font-size: 13px;
+}
+
+.editInput {
+  width: 260px;
+  height: 36px;
+  background: $colorWhite;
+  border: 1px solid #dae1e8;
+  border-radius: 4px;
+  padding: 9px 21px 9px 10px;
+  font-size: 13px;
+  line-height: 18px;
+  outline: none;
+  font-weight: 400;
+}
+
+.saveChangesBtn,
+.cancelChangesBtn {
+  width: 77px;
+  height: 36px;
+  border: none;
+}
+
+.changeContainer {
+  @include flex(center, center);
+}
+
+.saveChangesBtn {
+  color: $colorWhite;
+  background: #5495ff;
+}
+.cancelChangesBtn {
+  color: #225fbf;
+  background: #f6f8fd;
+}
+
+.cancelChangesBtn,
+.saveChangesBtn {
+  @include flex(center, center);
+  width: 77px;
+  height: 36px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  transition: 0.1s;
+  cursor: pointer;
+}
+
+.genderInputContainer {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.genderInputContainer {
+  @include flex(center);
+
+  span {
+    margin-left: 12px;
+    margin-right: 25px;
+  }
+}

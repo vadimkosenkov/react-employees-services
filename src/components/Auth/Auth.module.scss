@@ -1,0 +1,72 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  background: #f6f8fd;
+}
+
+.authBar {
+  width: 100%;
+  max-width: 400px;
+  min-height: 170px;
+  background: $colorWhite;
+  box-shadow: 0px 1px 3px rgba(32, 75, 146, 0.15);
+  border-radius: 5px;
+  padding: 24px;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.authInputContainer {
+  @include flex(center);
+  background: $colorWhite;
+  border: 1px solid #dae1e8;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-bottom: 11px;
+  width: 100%;
+  height: 36px;
+}
+
+.authInput {
+  width: 100%;
+  border: none;
+  margin-left: 9px;
+  outline: none;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.006em;
+}
+
+.authLogInBtn {
+  @include flex(center, center);
+  background: #5495ff;
+  border-radius: 3px;
+  border: none;
+  width: 100%;
+  height: 36px;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: $colorWhite;
+  transition: 0.1s;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+  }
+}

@@ -4,63 +4,45 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "development",
-
-  entry: {
-    index: "./src/index/index.js",
-    auth: "./src/auth/auth.js",
-    profile: "./src/profile/profile.js",
-    roles: "./src/roles/roles.js",
-  },
+  entry: "./src/index.js",
 
   devServer: {
-    port: 8080,
+    port: 4200,
     writeToDisk: false,
+    historyApiFallback: true,
   },
 
   module: {
     rules: [
       {
-        test: /\.m?js$/i,
+        test: /\.js|jsx$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
         },
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+              modules: {
+                localIdentName: "[local]___[hash:base64:4]",
+              },
+            },
+          },
+          { loader: "sass-loader" },
+        ],
       },
     ],
   },
-
   plugins: [
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
-      template: "./src/index/index.html",
-      inject: true,
-      chunks: ["index"],
-      filename: "index.html",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/auth/auth.html",
-      inject: true,
-      chunks: ["auth"],
-      filename: "auth.html",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/profile/profile.html",
-      inject: true,
-      chunks: ["profile"],
-      filename: "profile.html",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/roles/roles.html",
-      inject: true,
-      chunks: ["roles"],
-      filename: "roles.html",
+      template: "./public/index.html",
     }),
     new CopyPlugin({
       patterns: [{ from: "./assets", to: "./assets" }],

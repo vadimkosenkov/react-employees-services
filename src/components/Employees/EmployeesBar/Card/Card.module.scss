@@ -1,0 +1,85 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.employeeCard {
+  width: 250px;
+  height: 290px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(32, 75, 146, 0.15);
+  border-radius: 5px;
+  padding: 20px 35px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 1px 3px rgba(32, 75, 146, 0.5);
+  }
+}
+
+.cardNameContainer {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 52px;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 180px;
+    height: 2px;
+    margin-top: 32px;
+    background: #eceff1;
+  }
+}
+
+.employeeImg {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.cardNameEn {
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+.cardNameRu {
+  font-size: 13px;
+  line-height: 15px;
+  color: $colorLightGrey;
+}
+
+.officeLocation {
+  @include flex(center);
+}
+
+.officeDepartment {
+  margin-right: 28px;
+}
+
+.officeRoom,
+.officeDepartment {
+  img {
+    margin-right: 6px;
+  }
+}
+
+.officeRoom,
+.officeDepartment {
+  @include flex(center);
+  font-size: 12px;
+  line-height: 15px;
+}

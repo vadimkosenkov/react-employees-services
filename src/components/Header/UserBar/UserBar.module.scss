@@ -1,0 +1,54 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.headerUserBar {
+  @include flex(center);
+}
+
+.headerMessage,
+.headerTurnOff {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: $colorBlue;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.headerMessage:hover,
+.headerTurnOff:hover {
+  transform: scale(1.04);
+}
+
+.headerUserInfo {
+  @include flex(center, space-between);
+  background-color: $colorBlue;
+  padding: 0 18px 0 2px;
+  height: 32px;
+  border-radius: 50px;
+  margin: 0 32px 0 16px;
+  cursor: pointer;
+
+  div {
+    color: $colorWhite;
+    padding-left: 15px;
+    text-transform: uppercase;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+}
