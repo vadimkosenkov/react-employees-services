@@ -1,55 +1,44 @@
-import React from 'react';
-import s from './Roles.module.scss';
-import PageNotFound from './../Employees/PageNotFound/PageNotFound.jsx';
-import RolesCard from './RolesCard/RolesCard.jsx';
-import SearchBar from './SearchBar/SearchBar.jsx';
-import { sendRequest } from './../../utilities/utilities.js';
+import React, { useState, useEffect } from "react";
+import s from "./Roles.module.scss";
+import PageNotFound from "./../Employees/PageNotFound/PageNotFound.jsx";
+import RolesCard from "./RolesCard/RolesCard.jsx";
+import SearchBar from "./SearchBar/SearchBar.jsx";
+import { sendRequest } from "./../../utilities/utilities.js";
 
-class Roles extends React.Component {
-    constructor(props) {
-        super(props);
+const Roles = (props) => {
+  const [employees, setEmployees] = useState([]);
 
-        this.state = {
-            employees: [],
-        };
+  useEffect(() => {
+    sendRequest(
+      `https://nodejs-ps143.herokuapp.com/api/employees`,
+      renderCards,
+      "GET"
+    );
+  }, [getFilteredEmployees]);
+
+  const getFilteredEmployees = (searchValue) => {
+    const searchUrl = `https://nodejs-ps143.herokuapp.com/api/employees?search=${searchValue}`;
+    sendRequest(searchUrl, renderCards, "GET");
+  };
+
+  const renderCards = (data, error) => {
+    if (!error) {
+      setEmployees({ employees: [...data], a: data.length });
     }
+  };
 
-    componentDidMount() {
-        this.mounted = true;
-        sendRequest(`https://nodejs-ps143.herokuapp.com/api/employees`, this.renderCards, 'GET');
-    }
-
-    componentWillUnmount() {
-        this.mounted = false;
-    }
-
-    getFilteredEmployees = searchValue => {
-        const searchUrl = `https://nodejs-ps143.herokuapp.com/api/employees?search=${searchValue}`;
-        sendRequest(searchUrl, this.renderCards, 'GET');
-    };
-
-    renderCards = (data, error) => {
-        if (!error && this.mounted) {
-            this.setState({ employees: [...data], a: data.length });
-        }
-    };
-
-    getFilteredEmployees = searchValue => {
-        const searchUrl = `https://nodejs-ps143.herokuapp.com/api/employees?search=${searchValue}`;
-        sendRequest(searchUrl, this.renderCards, 'GET');
-    };
-
-    render() {
-        return (
-            <main className={s.main}>
-                <div className={s.mainContainer}>
-                    <SearchBar filterEmployees={this.getFilteredEmployees} />
-
-                    {this.state.employees.length ? <RolesCard employees={this.state.employees} /> : <PageNotFound />}
-                </div>
-            </main>
-        );
-    }
-}
+  return (
+    <main className={s.main}>
+      <div className={s.mainContainer}>
+        <SearchBar filterEmployees={getFilteredEmployees} />
+        {employees.a ? (
+          <RolesCard employees={employees.employees} />
+        ) : (
+          <PageNotFound />
+        )}
+      </div>
+    </main>
+  );
+};
 
 export default Roles;

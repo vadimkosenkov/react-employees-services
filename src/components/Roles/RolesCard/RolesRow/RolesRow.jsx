@@ -1,58 +1,49 @@
-import React from 'react';
-import s from './RolesRow.module.scss';
-import { sendRequest } from './../../../../utilities/utilities.js';
+import React, { useEffect, useState } from "react";
+import s from "./RolesRow.module.scss";
+import { sendRequest } from "./../../../../utilities/utilities.js";
 
-class RolesRow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            role: props.employee.role,
-        };
-    }
+const RolesRow = (props) => {
+  const [role, setRole] = useState(props.employee.role);
+  const changeRole = (arg) => {
+    setRole(arg);
+    sendRequest(
+      `https://nodejs-ps143.herokuapp.com/api/role/${props.employee.id}`,
+      () => {},
+      "PATCH",
+      { role: arg }
+    );
+  };
 
-    changeRole(role) {
-        const newRoleObj = { role: role };
-        sendRequest(
-            `https://nodejs-ps143.herokuapp.com/api/role/${this.props.employee.id}`,
-            () => {},
-            'PATCH',
-            newRoleObj,
-        );
-        this.setState(newRoleObj);
-    }
-
-    render() {
-        return (
-            <div className={s.row}>
-                <img className={s.employeeImgRow} src={this.props.employee.avatarSrc} />
-                <div className={s.rowContainer}>
-                    <div className={s.cardNameEn}>
-                        {this.props.employee.firstName + ' ' + this.props.employee.lastName}
-                    </div>
-                    <div className={s.cardNameRu}>
-                        {this.props.employee.firstNameNative + ' ' + this.props.employee.lastNameNative}
-                    </div>
-                </div>
-                <div className={s.rowContainerInfo}>
-                    <button
-                        className={s.roleBtn + ' ' + (this.state.role === 'user' ? s.btnActive : null)}
-                        onClick={() => this.changeRole('user')}>
-                        employee
-                    </button>
-                    <button
-                        className={s.roleBtn + ' ' + (this.state.role === 'editor' ? s.btnActive : null)}
-                        onClick={() => this.changeRole('editor')}>
-                        editor
-                    </button>
-                    <button
-                        className={s.roleBtn + ' ' + (this.state.role === 'admin' ? s.btnActive : null)}
-                        onClick={() => this.changeRole('admin')}>
-                        admin
-                    </button>
-                </div>
-            </div>
-        );
-    }
-}
+  return (
+    <div className={s.row}>
+      <img className={s.employeeImgRow} src={props.employee.avatarSrc} />
+      <div className={s.rowContainer}>
+        <div className={s.cardNameEn}>
+          {props.employee.firstName + " " + props.employee.lastName}
+        </div>
+        <div className={s.cardNameRu}>
+          {props.employee.firstNameNative + " " + props.employee.lastNameNative}
+        </div>
+      </div>
+      <div className={s.rowContainerInfo}>
+        <button
+          className={s.roleBtn + " " + (role === "user" ? s.btnActive : null)}
+          onClick={() => changeRole("user")}>
+          employee
+        </button>
+        <button
+          className={s.roleBtn + " " + (role === "editor" ? s.btnActive : null)}
+          onClick={() => changeRole("editor")}>
+          editor
+        </button>
+        <button
+          className={s.roleBtn + " " + (role === "admin" ? s.btnActive : null)}
+          onClick={() => changeRole("admin")}>
+          admin
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default RolesRow;
