@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import s from "./RolesRow.module.scss";
-import { sendRequest } from "./../../../../utilities/utilities.js";
+import { sendRole } from "../../../../actions/roles-action";
 
 const RolesRow = (props) => {
   const [role, setRole] = useState(props.employee.role);
-  const changeRole = (arg) => {
-    setRole(arg);
-    sendRequest(
-      `https://nodejs-ps143.herokuapp.com/api/role/${props.employee.id}`,
-      () => {},
-      "PATCH",
-      { role: arg }
-    );
+  const dispatch = useDispatch();
+
+  const changeRole = (role) => {
+    dispatch(sendRole(props.employee.id, role));
   };
+
+  useEffect(() => {
+    setRole(props.employee.role);
+  }, [props]);
 
   return (
     <div className={s.row}>

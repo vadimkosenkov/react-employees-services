@@ -1,36 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import s from './Employees.module.scss';
-import SearchBar from './SearchBar/SearchBar.jsx';
-import EmployeesBar from './EmployeesBar/EmployeesBar.jsx';
-import PageNotFound from './PageNotFound/PageNotFound.jsx';
-import { sendRequest } from './../../utilities/utilities.js';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getEmployees } from "./../../actions/employees-action";
+import s from "./Employees.module.scss";
+import SearchBar from "./SearchBar/SearchBar.jsx";
+import EmployeesBar from "./EmployeesBar/EmployeesBar.jsx";
+import PageNotFound from "./PageNotFound/PageNotFound.jsx";
 
 const Employees = () => {
-    const [employees, employeesState] = useState([]);
+  const dispatch = useDispatch();
+  const employees = useSelector((state) => state.employees.employees);
 
-    useEffect(() => {
-        sendRequest(`https://nodejs-ps143.herokuapp.com/api/employees`, renderCards, 'GET');
-    }, []);
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, []);
 
-    const getFilteredEmployees = searchValue => {
-        const searchUrl = `https://nodejs-ps143.herokuapp.com/api/employees?search=${searchValue}`;
-        sendRequest(searchUrl, renderCards, 'GET');
-    };
-
-    const renderCards = (data, error) => {
-        if (!error) {
-            employeesState([...data]);
-        }
-    };
-
-    return (
-        <main className={s.main}>
-            <div className={s.mainContainer}>
-                <SearchBar filterEmployees={getFilteredEmployees} />
-                {employees.length ? <EmployeesBar employees={employees} /> : <PageNotFound />}
-            </div>
-        </main>
-    );
+  return (
+    <main className={s.main}>
+      <div className={s.mainContainer}>
+        <SearchBar />
+        {employees.length ? <EmployeesBar /> : <PageNotFound />}
+      </div>
+    </main>
+  );
 };
 
 export default Employees;

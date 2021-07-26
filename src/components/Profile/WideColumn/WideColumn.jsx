@@ -1,60 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import s from "./wideColumn.module.scss";
 import {
   getDateString,
   getDateCalendar,
-  sendRequest,
   getFromLocalStorage,
 } from "./../../../utilities/utilities.js";
+import {
+  changeEditView,
+  updateEmployee,
+} from "./../../../actions/profile-action";
 
-const WideColumn = (props) => {
-  const [employee, employeeState] = useState({});
-  const [edit, editState] = useState(false);
+const WideColumn = () => {
+  const dispatch = useDispatch();
+  const employee = useSelector((state) => state.profile.employee);
+  const isEdit = useSelector((state) => state.profile.isEdit);
   const userInfo = getFromLocalStorage("userInfo");
 
-  useEffect(() => {
-    editState(props.edit);
-    employeeState({ ...props.data });
-  }, [props]);
+  const [sendEmployeeData, setSendEmployeeData] = useState({ ...employee });
 
-  const sendEditRequest = (e) => {
+  useEffect(() => {
+    setSendEmployeeData({ ...employee });
+  }, [employee, isEdit]);
+
+  const sendRequest = (e) => {
     e.preventDefault();
-    sendRequest(
-      `https://nodejs-ps143.herokuapp.com/api/employees/${props.data.id}`,
-      reRenderEmployeeData,
-      "PATCH",
-      employee
-    );
+    dispatch(updateEmployee(sendEmployeeData, employee.id));
   };
 
   const cancelEditRequest = (e) => {
     e.preventDefault();
-    props.setEditState(false);
+    dispatch(changeEditView(false));
   };
 
-  const reRenderEmployeeData = (data, error) => {
-    if (!error) {
-      props.setEditState(false);
-    }
+  const setEditView = (e) => {
+    e.preventDefault();
+    dispatch(changeEditView(true));
   };
 
-  const setEdit = () => {
-    editState(true);
-    props.setEditState(true);
-  };
-
-  const getInputValue = (value, stateParamName) => {
+  const getInputValue = (value, stateParamName, type = "text") => {
     return (
       <input
+        key={stateParamName}
         className={s.editInput}
-        type="text"
+        type={type}
         value={value}
         onChange={(event) => {
-          employeeState({ [stateParamName]: event.target.value });
+          setSendEmployeeData({
+            ...sendEmployeeData,
+            [stateParamName]: event.target.value,
+          });
         }}
       />
     );
   };
+
   return (
     <div className={s.wideColumn}>
       <form>
@@ -64,15 +64,15 @@ const WideColumn = (props) => {
               <div className={s.profileSectionName}>General info</div>
               <div
                 className={
-                  edit || userInfo?.role === "user"
+                  isEdit || userInfo?.role === "user"
                     ? s.hidden
                     : s.editLinkHidden
                 }>
-                <div className={s.editLinkContainer} onClick={setEdit}>
+                <div className={s.editLinkContainer} onClick={setEditView}>
                   <div className={s.editLink}>edit details</div>
                 </div>
               </div>
-              <div className={edit ? "" : s.hidden}>
+              <div className={isEdit ? "" : s.hidden}>
                 <div
                   className={
                     s.changeContainer +
@@ -81,22 +81,18 @@ const WideColumn = (props) => {
                   }>
                   <button
                     className={s.cancelChangesBtn}
-                    onClick={(e) => {
-                      cancelEditRequest(e);
-                    }}>
+                    onClick={cancelEditRequest}>
                     cancel
                   </button>
                   <button
                     className={s.saveChangesBtn}
-                    onClick={(e) => {
-                      sendEditRequest(e);
-                    }}>
+                    onClick={(e) => sendRequest(e)}>
                     save
                   </button>
                 </div>
               </div>
             </div>
-            <div className={edit ? "" : s.hidden}>
+            <div className={isEdit ? "" : s.hidden}>
               <div className={s.profileSectionDescription}>
                 <img src="/assets/icons/user.svg" alt="icon: user" />
                 <div className={s.profileDataName}>Gender</div>
@@ -106,9 +102,12 @@ const WideColumn = (props) => {
                     type="radio"
                     name="gender"
                     value="mr"
-                    checked={employee?.gender === "mr"}
+                    checked={sendEmployeeData?.gender === "mr"}
                     onChange={(event) => {
-                      employeeState({ gender: event.target.value });
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        gender: event.target.value,
+                      });
                     }}
                   />
                   <span>Mr</span>
@@ -117,9 +116,12 @@ const WideColumn = (props) => {
                     type="radio"
                     name="gender"
                     value="ms"
-                    checked={employee?.gender === "ms"}
+                    checked={sendEmployeeData?.gender === "ms"}
                     onChange={(event) => {
-                      employeeState({ gender: event.target.value });
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        gender: event.target.value,
+                      });
                     }}
                   />
                   <span>Ms</span>
@@ -132,9 +134,12 @@ const WideColumn = (props) => {
                   <input
                     className={s.editInput}
                     type="text"
-                    value={employee?.firstName}
+                    value={sendEmployeeData?.firstName}
                     onChange={(event) => {
-                      employeeState({ firstName: event.target.value });
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        firstName: event.target.value,
+                      });
                     }}
                   />
                 </div>
@@ -146,7 +151,13 @@ const WideColumn = (props) => {
                   <input
                     className={s.editInput}
                     type="text"
-                    value={employee?.lastName}
+                    value={sendEmployeeData?.lastName}
+                    onChange={(event) => {
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        lastName: event.target.value,
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -157,7 +168,13 @@ const WideColumn = (props) => {
                   <input
                     className={s.editInput}
                     type="text"
-                    value={employee?.firstNameNative}
+                    value={sendEmployeeData?.firstNameNative}
+                    onChange={(event) => {
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        firstNameNative: event.target.value,
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -168,7 +185,13 @@ const WideColumn = (props) => {
                   <input
                     className={s.editInput}
                     type="text"
-                    value={employee?.middleNameNative}
+                    value={sendEmployeeData?.middleNameNative}
+                    onChange={(event) => {
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        middleNameNative: event.target.value,
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -179,7 +202,13 @@ const WideColumn = (props) => {
                   <input
                     className={s.editInput}
                     type="text"
-                    value={employee?.lastNameNative}
+                    value={sendEmployeeData?.lastNameNative}
+                    onChange={(event) => {
+                      setSendEmployeeData({
+                        ...sendEmployeeData,
+                        lastNameNative: event.target.value,
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -188,18 +217,18 @@ const WideColumn = (props) => {
               <img src="/assets/icons/department.svg" alt="icon: department" />
               <div className={s.profileDataName}>Department</div>
               <div className={s.profileSectionData}>
-                {edit
-                  ? getInputValue(employee?.department)
-                  : employee?.department}
+                {isEdit
+                  ? getInputValue(sendEmployeeData?.department, "department")
+                  : sendEmployeeData?.department}
               </div>
             </div>
             <div className={s.profileSectionDescription}>
               <img src="/assets/icons/room.svg" alt="icon: room" />
               <div className={s.profileDataName}>Room</div>
               <div className={s.profileSectionData}>
-                {edit
-                  ? getInputValue(employee?.roomNumber)
-                  : employee?.roomNumber}
+                {isEdit
+                  ? getInputValue(sendEmployeeData?.roomNumber, "roomNumber")
+                  : sendEmployeeData?.roomNumber}
               </div>
             </div>
           </div>
@@ -212,9 +241,12 @@ const WideColumn = (props) => {
               />
               <div className={s.profileDataName}>Internal phone</div>
               <div className={s.profileSectionData}>
-                {edit
-                  ? getInputValue(employee?.internalPhone)
-                  : employee?.internalPhone}
+                {isEdit
+                  ? getInputValue(
+                      sendEmployeeData?.internalPhone,
+                      "internalPhone"
+                    )
+                  : sendEmployeeData?.internalPhone}
               </div>
             </div>
             <div className={s.profileSectionDescription}>
@@ -224,30 +256,36 @@ const WideColumn = (props) => {
               />
               <div className={s.profileDataName}>Mobile phone</div>
               <div className={s.profileSectionData}>
-                {edit
-                  ? getInputValue(employee?.mobilePhone)
-                  : employee?.mobilePhone}
+                {isEdit
+                  ? getInputValue(sendEmployeeData?.mobilePhone, "mobilePhone")
+                  : sendEmployeeData?.mobilePhone}
               </div>
             </div>
             <div className={s.profileSectionDescription}>
               <img src="/assets/icons/email.svg" alt="icon: Email" />
               <div className={s.profileDataName}>Email</div>
               <div className={s.profileSectionData}>
-                {edit ? getInputValue(employee?.email) : employee?.email}
+                {isEdit
+                  ? getInputValue(sendEmployeeData?.email, "email")
+                  : sendEmployeeData?.email}
               </div>
             </div>
             <div className={s.profileSectionDescription}>
               <img src="/assets/icons/skype.svg" alt="icon: Skype ID" />
               <div className={s.profileDataName}>Skype ID</div>
               <div className={s.profileSectionData}>
-                {edit ? getInputValue(employee?.skype) : employee?.skype}
+                {isEdit
+                  ? getInputValue(sendEmployeeData?.skype, "skype")
+                  : sendEmployeeData?.skype}
               </div>
             </div>
             <div className={s.profileSectionDescription}>
               <img src="/assets/icons/c-number.svg" alt="icon: C-Number" />
               <div className={s.profileDataName}>C-Number</div>
               <div className={s.profileSectionData}>
-                {edit ? getInputValue(employee?.cNumber) : employee?.cNumber}
+                {isEdit
+                  ? getInputValue(sendEmployeeData?.cNumber, "cNumber")
+                  : sendEmployeeData?.cNumber}
               </div>
             </div>
           </div>
@@ -257,18 +295,25 @@ const WideColumn = (props) => {
               <img src="/assets/icons/calendar.svg" alt="icon: Hire date" />
               <div className={s.profileDataName}>Hire date</div>
               <div className={s.profileSectionData}>
-                {edit
-                  ? getInputValue(getDateCalendar(employee?.dateHired))
-                  : getDateString(employee?.dateHired)}
+                {isEdit
+                  ? getInputValue(
+                      getDateCalendar(sendEmployeeData?.dateHired),
+                      "dateHired",
+                      "date"
+                    )
+                  : getDateString(sendEmployeeData?.dateHired)}
               </div>
             </div>
             <div className={s.profileSectionDescription}>
               <img src="/assets/icons/status.svg" alt="icon: Status" />
               <div className={s.profileDataName}>Status</div>
               <div className={s.profileSectionData}>
-                {edit
-                  ? getInputValue(employee?.isActive ? "Active" : "Fired")
-                  : employee?.isActive
+                {isEdit
+                  ? getInputValue(
+                      sendEmployeeData?.isActive ? "Active" : "Fired",
+                      "isActive"
+                    )
+                  : sendEmployeeData?.isActive
                   ? "Active"
                   : "Fired"}
               </div>
@@ -280,11 +325,14 @@ const WideColumn = (props) => {
               <img src="/assets/icons/vacation.svg" alt="icon: Vacation" />
               <div className={s.profileDataName}>Vacation</div>
               <div className={s.profileSectionData}>
-                {edit
+                {isEdit
                   ? getInputValue(
-                      employee?.vacation?.status ? "Enabled" : "Disabled"
+                      sendEmployeeData?.vacation?.status
+                        ? "Enabled"
+                        : "Disabled",
+                      "status"
                     )
-                  : employee?.vacation?.status
+                  : sendEmployeeData?.vacation?.status
                   ? "Enabled"
                   : "Disabled"}
               </div>
@@ -296,11 +344,14 @@ const WideColumn = (props) => {
               />
               <div className={s.profileDataName}>Adress book redesign</div>
               <div className={s.profileSectionData}>
-                {edit
+                {isEdit
                   ? getInputValue(
-                      employee?.addressBookRedesign ? "Enabled" : "Disabled"
+                      sendEmployeeData?.addressBookRedesign
+                        ? "Enabled"
+                        : "Disabled",
+                      "addressBookRedesign"
                     )
-                  : employee?.addressBookRedesign
+                  : sendEmployeeData?.addressBookRedesign
                   ? "Enabled"
                   : "Disabled"}
               </div>

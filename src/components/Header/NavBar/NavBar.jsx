@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router";
 import "./../../../App.scss";
 import s from "./NavBar.module.scss";
-import { NavLink } from "react-router-dom";
 import { getFromLocalStorage } from "./../../../utilities/utilities.js";
-import { withRouter } from "react-router";
 
 const NavBar = (props) => {
   const userInfo = getFromLocalStorage("userInfo");

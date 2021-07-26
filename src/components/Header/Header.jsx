@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuthRoute } from "./../../actions/header-action";
 import "./../../App.scss";
 import s from "./Header.module.scss";
 import Title from "./Title/Title.jsx";
@@ -6,15 +8,16 @@ import NavBar from "./NavBar/NavBar.jsx";
 import UserBar from "./UserBar/UserBar.jsx";
 
 const Header = (props) => {
-  const [isAuthRoute, setIsAuthRoute] = useState(false);
+  const dispatch = useDispatch();
+  const isAuthRoute = useSelector((state) => state.header.isAuthRoute);
 
   useEffect(() => {
     if (props.location.pathname === "/auth") {
-      setIsAuthRoute(true);
+      dispatch(checkAuthRoute(true));
     } else if (props.location.pathname !== "/auth") {
-      setIsAuthRoute(false);
+      dispatch(checkAuthRoute(false));
     } else {
-      setIsAuthRoute(false);
+      dispatch(checkAuthRoute(false));
     }
   });
 

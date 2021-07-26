@@ -1,7 +1,7 @@
 import React from "react";
+import { withRouter } from "react-router";
 import s from "./UserBar.module.scss";
 import { getFromLocalStorage } from "./../../../utilities/utilities.js";
-import { withRouter } from "react-router";
 
 function UserBar(props) {
   const userInfo = getFromLocalStorage("userInfo");

@@ -1,9 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import s from "./RolesCard.module.scss";
 import RolesRow from "./RolesRow/RolesRow.jsx";
 
-const RolesCard = (props) => {
-  const cardElements = props.employees.map((elem) => {
+const RolesCard = () => {
+  const employees = useSelector((state) => state.roles.employees);
+
+  const cardElements = employees.map((elem) => {
     return <RolesRow key={elem.id} employee={elem} />;
   });
 
