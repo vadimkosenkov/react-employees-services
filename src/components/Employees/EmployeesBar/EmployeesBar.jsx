@@ -4,6 +4,7 @@ import s from "./EmployeesBar.module.scss";
 import EmployeesBarHeader from "./EmployeesBarHeader/EmployeesBarHeader.jsx";
 import Card from "./Card/Card.jsx";
 import CardRow from "./CardRow/CardRow.jsx";
+import ErrorBoundary from "./../../../utilities/ErrorBoundary.jsx";
 
 const EmployeesBar = () => {
   const employees = useSelector((state) => state.employees.employees);
@@ -22,7 +23,7 @@ const EmployeesBar = () => {
       <EmployeesBarHeader />
       <div className={s.card}>
         <div className={`${s.cardContainer} ${isRow ? s.rowStyle : " "}`}>
-          {cardElements}
+          <ErrorBoundary>{cardElements}</ErrorBoundary>
         </div>
       </div>
     </div>

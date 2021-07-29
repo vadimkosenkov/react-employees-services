@@ -1,18 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App.js";
-import { compose, createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import { rootReducer } from "./reducers/root-reducer.js";
-import thunk from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
+import authSlice from "./toolkitSlice/authSlice";
+import employeesSlice from "./toolkitSlice/employeesSlice";
+import headerSlice from "./toolkitSlice/headerSlice";
+import profileSlice from "./toolkitSlice/profileSlice";
+import rolesSlice from "./toolkitSlice/rolesSlice";
 
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(thunk),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
+const store = configureStore({
+  reducer: {
+    auth: authSlice,
+    header: headerSlice,
+    employees: employeesSlice,
+    profile: profileSlice,
+    roles: rolesSlice,
+  },
+});
 
 const app = (
   <Provider store={store}>

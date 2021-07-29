@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getFilterEmployees } from "./../../../actions/employees-action";
+import { getFilterEmployees } from "./../../../utilities/utilities.js";
 import s from "./SearchBar.module.scss";
 
 const SearchBar = () => {

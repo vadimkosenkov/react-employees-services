@@ -2,14 +2,38 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import s from "./wideColumn.module.scss";
 import {
+  changeEditViewAction,
+  updateEmployeeAction,
+} from "../../../toolkitSlice/profileSlice";
+import {
   getDateString,
   getDateCalendar,
   getFromLocalStorage,
+  showAlert,
 } from "./../../../utilities/utilities.js";
-import {
-  changeEditView,
-  updateEmployee,
-} from "./../../../actions/profile-action";
+
+const updateEmployee = (data, userId) => {
+  const sendData = { ...data, dateHired: new Date(data.dateHired).getTime() };
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `https://nodejs-ps143.herokuapp.com/api/employees/${userId}`,
+        {
+          body: JSON.stringify(sendData),
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const json = await response.json();
+      dispatch(updateEmployeeAction({ ...json }));
+      dispatch(changeEditViewAction(false));
+    } catch (e) {
+      dispatch(showAlert("Request error. Please try again"));
+    }
+  };
+};
 
 const WideColumn = () => {
   const dispatch = useDispatch();
@@ -30,12 +54,12 @@ const WideColumn = () => {
 
   const cancelEditRequest = (e) => {
     e.preventDefault();
-    dispatch(changeEditView(false));
+    dispatch(changeEditViewAction(false));
   };
 
   const setEditView = (e) => {
     e.preventDefault();
-    dispatch(changeEditView(true));
+    dispatch(changeEditViewAction(true));
   };
 
   const getInputValue = (value, stateParamName, type = "text") => {

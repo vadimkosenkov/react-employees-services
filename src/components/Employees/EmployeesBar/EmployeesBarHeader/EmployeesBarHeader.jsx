@@ -1,8 +1,8 @@
 import React from "react";
-import { changeCardView } from "./../../../../actions/employees-action";
 import { useDispatch, useSelector } from "react-redux";
 import "./../../../../App.scss";
 import s from "./EmployeesBarHeader.module.scss";
+import { changeCardViewAction } from "./../../../../toolkitSlice/employeesSlice";
 
 const EmployeesBarHeader = () => {
   const isRow = useSelector((state) => state.employees.isRow);
@@ -10,10 +10,10 @@ const EmployeesBarHeader = () => {
   const dispatch = useDispatch();
 
   const setRowView = () => {
-    dispatch(changeCardView(true));
+    dispatch(changeCardViewAction(true));
   };
   const setGridView = () => {
-    dispatch(changeCardView(false));
+    dispatch(changeCardViewAction(false));
   };
 
   return (
