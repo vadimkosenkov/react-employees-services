@@ -1,7 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import { sendRoleAction } from "../../../../toolkitSlice/rolesSlice";
+import { showAlert } from "../../../../utilities/utilities";
 import s from "./RolesRow.module.scss";
-import { sendRole } from "../../../../actions/roles-action";
+
+function sendRole(userId, role) {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `https://nodejs-ps143.herokuapp.com/api/role/${userId}`,
+        {
+          body: JSON.stringify({ role }),
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const json = await response.json();
+      dispatch(sendRoleAction({ ...json }));
+    } catch (e) {
+      dispatch(showAlert("Request error. Please try again"));
+    }
+  };
+}
 
 const RolesRow = (props) => {
   const [role, setRole] = useState(props.employee.role);
@@ -45,6 +68,18 @@ const RolesRow = (props) => {
       </div>
     </div>
   );
+};
+
+RolesRow.propTypes = {
+  employee: PropTypes.object.isRequired,
+  employee: PropTypes.shape({
+    id: PropTypes.number,
+    role: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    firstNameNative: PropTypes.string,
+    lastNameNative: PropTypes.string,
+  }),
 };
 
 export default RolesRow;

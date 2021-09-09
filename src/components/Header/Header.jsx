@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { checkAuthRoute } from "./../../actions/header-action";
+import { useDispatch, connect } from "react-redux";
+import { checkAuthRouteAction } from "./../../toolkitSlice/headerSlice";
+import PropTypes from "prop-types";
 import "./../../App.scss";
 import s from "./Header.module.scss";
 import Title from "./Title/Title.jsx";
@@ -9,27 +10,37 @@ import UserBar from "./UserBar/UserBar.jsx";
 
 const Header = (props) => {
   const dispatch = useDispatch();
-  const isAuthRoute = useSelector((state) => state.header.isAuthRoute);
 
   useEffect(() => {
     if (props.location.pathname === "/auth") {
-      dispatch(checkAuthRoute(true));
+      dispatch(checkAuthRouteAction(true));
     } else if (props.location.pathname !== "/auth") {
-      dispatch(checkAuthRoute(false));
+      dispatch(checkAuthRouteAction(false));
     } else {
-      dispatch(checkAuthRoute(false));
+      dispatch(checkAuthRouteAction(false));
     }
-  });
+  }, [props.location.pathname]);
 
   return (
     <header className={s.header}>
       <div className={s.headerContainer}>
         <Title />
-        {isAuthRoute ? null : <NavBar />}
-        {isAuthRoute ? null : <UserBar />}
+        {props.isAuthRoute ? null : <NavBar />}
+        {props.isAuthRoute ? null : <UserBar />}
       </div>
     </header>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    isAuthRoute: state.header.isAuthRoute,
+  };
+};
+
+Header.propTypes = {
+  isAuthRoute: PropTypes.bool,
+  location: PropTypes.shape({ pathname: PropTypes.string }),
+};
+
+export default connect(mapStateToProps)(Header);

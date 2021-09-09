@@ -1,15 +1,20 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { withRouter } from "react-router";
 import s from "./UserBar.module.scss";
 import { getFromLocalStorage } from "./../../../utilities/utilities.js";
+import { signOutAction } from "./../../../toolkitSlice/headerSlice";
 
-function UserBar(props) {
+function UserBar() {
   const userInfo = getFromLocalStorage("userInfo");
+  const dispatch = useDispatch();
 
   const logOut = () => {
+    dispatch(signOutAction());
     localStorage.removeItem("userInfo");
-    props.history.push("/auth");
+    window.location.href = "/auth";
   };
+
   return (
     <div className={s.headerUserBar}>
       <div className={s.headerMessage}>
