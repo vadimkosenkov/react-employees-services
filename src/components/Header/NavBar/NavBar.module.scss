@@ -1,0 +1,46 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.navContainer {
+  @include flex(center);
+
+  div {
+    @include flex(center, center);
+    width: 106px;
+    height: 68px;
+
+    &:not(:last-child) {
+      margin-right: 52px;
+    }
+
+    &:last-child a {
+      margin-right: 4px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 20px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+.activeNavLink::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 106px;
+  height: 4px;
+  margin-top: 68px;
+  background: #5495ff;
+  border-radius: 3px;
+}

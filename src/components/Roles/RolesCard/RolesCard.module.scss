@@ -1,0 +1,16 @@
+$colorWhite: #ffffff;
+$colorBlue: #1753b3;
+$colorLightGrey: #afb7bf;
+
+@mixin flex($ai: normal, $jc: flex-start, $fd: row) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+  flex-direction: $fd;
+}
+
+.cardContainer {
+  box-shadow: 0px 1px 3px rgba(32, 75, 146, 0.15);
+  border-radius: 5px;
+  border: 1px solid #e9edf2;
+}
