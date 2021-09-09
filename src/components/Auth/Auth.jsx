@@ -1,43 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { logIn } from "./../../actions/auth-action";
 import "./../../App";
 import s from "./Auth.module.scss";
-import {
-  sendRequest,
-  parseJwt,
-  setToLocalStorage,
-} from "../../utilities/utilities";
-import { withRouter } from "react-router";
 
-const Auth = (props) => {
+const Auth = () => {
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
   });
 
-  const login = (e) => {
-    e.preventDefault();
-    sendRequest(
-      "https://nodejs-ps143.herokuapp.com/auth/login",
-      getLoginResponse,
-      "POST",
-      authData
-    );
-  };
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const getLoginResponse = (data, error) => {
-    if (!error) {
-      const tokenData = parseJwt(data.token.split(" ")[1]);
-      setToLocalStorage("userInfo", tokenData);
-      props.history.push("/");
-    } else {
-      alert("Email or password is incorrect. Please check and try again.");
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/");
     }
-  };
+  }, [isAuthenticated]);
 
   return (
     <main className={s.main}>
       <div className={s.authBar}>
-        <form action="#" onSubmit={(e) => login(e)} className={s.authForm}>
+        <form
+          action="#"
+          onSubmit={(e) => dispatch(logIn(e, authData))}
+          className={s.authForm}>
           <div className={s.authInputContainer}>
             <svg
               width="24"
@@ -97,4 +88,10 @@ const Auth = (props) => {
   );
 };
 
-export default withRouter(Auth);
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+  };
+};
+
+export default connect(mapStateToProps)(Auth);
