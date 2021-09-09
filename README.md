@@ -1,8 +1,21 @@
 # React employees services
-Проект курса LeverX Grou: "Front-end programming".
-Проект выполнил: Вадим Косенков.
+Сourse project: LeverX Group: "Front-end programming".
 
-## Используются технологии
+### For authorization use the following data:
+#### admin
+- login: d.antonenka@leverx.com
+- pass: 12345678
+
+#### editor
+- login: a.zhukau@leverX.com
+- pass: 12345678
+
+#### user
+- login: m.podolsky@leverx.com
+- pass: 12345678
+
+
+## Technologies used
 - HTML
 - CSS / SCSS
 - JavaScript
@@ -13,3 +26,4 @@
 - Error-boundary
 - Hoc
 - Prop-types
+- Node.js
